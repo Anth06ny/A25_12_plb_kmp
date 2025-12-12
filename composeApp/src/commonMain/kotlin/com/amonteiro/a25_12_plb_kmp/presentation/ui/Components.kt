@@ -7,7 +7,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.amonteiro.a25_12_plb_kmp.data.remote.WeatherBean
 
+@Composable
+expect fun WeatherGallery(modifier:Modifier = Modifier, urlList: List<WeatherBean>, onPictureClick: (WeatherBean)->Unit)
 
 //Le composant est réutilisable avec n'importe quelle chaine de caractère
 @Composable

@@ -7,7 +7,6 @@ import com.amonteiro.a25_12_plb_kmp.data.remote.KtorWeatherAPI
 import com.amonteiro.a25_12_plb_kmp.data.remote.TempBean
 import com.amonteiro.a25_12_plb_kmp.data.remote.WeatherBean
 import com.amonteiro.a25_12_plb_kmp.data.remote.WindBean
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
@@ -37,6 +36,7 @@ class MainViewModel : ViewModel() {
     val errorMessage = MutableStateFlow("")
 
     init {
+        loadWeathers("Paris")
     }
 
     fun toggleFavorite(id: Int) {

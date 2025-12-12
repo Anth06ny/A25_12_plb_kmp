@@ -16,6 +16,8 @@ class MainActivity : ComponentActivity() {
             App()
         }
     }
+
+
 }
 
 @Preview

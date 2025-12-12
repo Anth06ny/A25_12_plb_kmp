@@ -1,5 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -10,6 +11,15 @@ plugins {
 
     //kotlinxSerialization : kotlin version
     kotlin("plugin.serialization") version "2.1.0"
+    //plugin pour créer et injecter dans BuildConfig les clés de local.properties
+    id("com.github.gmazzo.buildconfig") version "5.5.1"
+}
+
+// Read API key from local.properties
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
 }
 
 kotlin {
@@ -86,6 +96,22 @@ kotlin {
         }
 
     }
+}
+
+//A ajouter à la racine
+buildConfig {
+    // Définit le nom de la classe générée
+    className("BuildConfig")
+    // Le package où la classe sera générée
+    packageName("com.amonteiro.a25_12_plb_kmp")
+
+    // Récupération sécurisée de la clé
+    val weatherAPIKey = localProperties.getProperty("weather.api.key") ?: ""
+
+    println("weatherAPIKey chargée : $weatherAPIKey")
+
+    // Crée le champ pour tous les targets (Android, iOS, Desktop)
+    buildConfigField("String", "WEATHER_API_KEY", "\"$weatherAPIKey\"")
 }
 
 android {

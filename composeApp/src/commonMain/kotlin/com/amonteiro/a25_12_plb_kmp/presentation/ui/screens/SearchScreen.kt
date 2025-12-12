@@ -8,7 +8,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -54,6 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.amonteiro.a25_12_plb_kmp.data.remote.WeatherBean
 import com.amonteiro.a25_12_plb_kmp.presentation.ui.MyError
+import com.amonteiro.a25_12_plb_kmp.presentation.ui.WeatherGallery
 import com.amonteiro.a25_12_plb_kmp.presentation.viewmodel.MainViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -121,15 +120,7 @@ fun SearchScreen(
             val list = mainViewModel.dataList.collectAsStateWithLifecycle().value
                 .filter { !showFavorite || it.favorite }
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(1f)
-            ) {
-                items(list.size) {
-                    PictureRowItem(
-                        data = list[it],
-                        onPictureClick = { onPictureItemClick(list[it]) })
-                }
-            }
+            WeatherGallery(urlList = list, onPictureClick = onPictureItemClick, modifier = Modifier.weight(1f))
 
             Row {
                 Button(

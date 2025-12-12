@@ -1,5 +1,6 @@
 package com.amonteiro.a25_12_plb_kmp.data.remote
 
+import com.amonteiro.a25_12_plb_kmp.BuildConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpTimeout
@@ -47,7 +48,7 @@ object KtorWeatherAPI {
 
     suspend fun loadWeathers(cityName: String): List<WeatherBean> {
 
-        val response = client.get("https://api.openweathermap.org/data/2.5/find?q=$cityName&appid=b80967f0a6bd10d23e44848547b26550&units=metric&lang=fr")
+        val response = client.get("https://api.openweathermap.org/data/2.5/find?q=$cityName&appid=${BuildConfig.WEATHER_API_KEY}&units=metric&lang=fr")
 
         delay(2000)
 
