@@ -48,7 +48,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.amonteiro.a25_12_plb_kmp.data.remote.WeatherBean
 import com.amonteiro.a25_12_plb_kmp.presentation.ui.MyError
@@ -56,13 +55,14 @@ import com.amonteiro.a25_12_plb_kmp.presentation.ui.WeatherGallery
 import com.amonteiro.a25_12_plb_kmp.presentation.viewmodel.MainViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    mainViewModel: MainViewModel = viewModel {MainViewModel()},
+    mainViewModel: MainViewModel = koinViewModel<MainViewModel>(),
     onPictureItemClick: (WeatherBean) -> Unit = {}
 ) {
 

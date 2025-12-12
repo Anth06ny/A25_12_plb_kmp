@@ -7,6 +7,7 @@ import com.amonteiro.a25_12_plb_kmp.data.remote.KtorWeatherAPI
 import com.amonteiro.a25_12_plb_kmp.data.remote.TempBean
 import com.amonteiro.a25_12_plb_kmp.data.remote.WeatherBean
 import com.amonteiro.a25_12_plb_kmp.data.remote.WindBean
+import com.amonteiro.a25_12_plb_kmp.di.initKoin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
@@ -15,7 +16,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 suspend fun main() {
-    val viewModel = MainViewModel()
+
+    val koin = initKoin()
+
+    val viewModel = koin.get<MainViewModel>()
     viewModel.loadWeathers("")
     //viewModel.loadWeathers("Paris")
 
@@ -26,10 +30,9 @@ suspend fun main() {
     println("List : ${viewModel.dataList.value}")
     println("ErrorMessage : ${viewModel.errorMessage.value}")
 
-    KtorWeatherAPI.close()  //Pour que le programme s'arrête, inutile sur Android
 }
 
-class MainViewModel : ViewModel() {
+class MainViewModel(val ktorWeatherAPI: KtorWeatherAPI) : ViewModel() {
     //MutableStateFlow est une donnée observable
     val dataList = MutableStateFlow(emptyList<WeatherBean>())
     val runInProgress = MutableStateFlow(false)
@@ -52,7 +55,7 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                dataList.value = KtorWeatherAPI.loadWeathers(cityName)
+                dataList.value = ktorWeatherAPI.loadWeathers(cityName)
             }
             catch (e: Exception) {
                 e.printStackTrace()
