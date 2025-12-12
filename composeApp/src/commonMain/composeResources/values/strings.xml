@@ -1,0 +1,4 @@
+<resources>
+    <string name="bt_filter">Clear data</string>
+    <string name="load_data">Load Data</string>
+</resources>
