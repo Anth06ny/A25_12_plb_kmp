@@ -1,3 +1,4 @@
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
@@ -13,6 +14,8 @@ plugins {
     kotlin("plugin.serialization") version "2.1.0"
     //plugin pour créer et injecter dans BuildConfig les clés de local.properties
     id("com.github.gmazzo.buildconfig") version "5.5.1"
+
+    id("app.cash.sqldelight") version "2.1.0"
 }
 
 // Read API key from local.properties
@@ -35,7 +38,7 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
-            isStatic = true
+//            isStatic = true
         }
     }
 
@@ -51,10 +54,17 @@ kotlin {
 
             //Si besoin du context
             implementation("io.insert-koin:koin-android:4.1.+")
+            //Base de données
+            implementation("app.cash.sqldelight:android-driver:2.1.0")
+
+
+
         }
         iosMain.dependencies {
             //Client de requêtes spécifique à iOS
             implementation("io.ktor:ktor-client-darwin:3.2.2")
+
+            implementation("app.cash.sqldelight:native-driver:2.1.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -91,6 +101,10 @@ kotlin {
             implementation("io.insert-koin:koin-compose:4.1.+")
             implementation("io.insert-koin:koin-compose-viewmodel:4.1.+")
             implementation("io.insert-koin:koin-compose-viewmodel-navigation:4.1.+")
+
+            //Base de données
+            implementation("app.cash.sqldelight:runtime:2.1.0")
+            implementation("app.cash.sqldelight:coroutines-extensions:2.1.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -101,6 +115,8 @@ kotlin {
 
             //Client de requêtes spécifique au bureau sur JVM donc même qu'Android
             implementation("io.ktor:ktor-client-okhttp:3.2.2")
+
+            implementation("app.cash.sqldelight:sqlite-driver:2.1.0")
         }
 
     }
@@ -161,6 +177,18 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.amonteiro.a25_12_plb_kmp"
             packageVersion = "1.0.0"
+            modules("java.sql")
         }
     }
+}
+
+//À mettre à la racine. Faire une 1ʳᵉ synchronisation avant d'ajouter ce bloc, à mettre au niveau d'indentation 0
+sqldelight {
+    databases {
+        create("MyDatabase") { //Nom de la classe qui sera généré pour représenter votre base
+            //Ou il doit aller chercher les fichiers .sq
+            packageName.set("com.amonteiro.a25_12_plb_kmp.db")
+        }
+    }
+    linkSqlite.set(true)
 }

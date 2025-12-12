@@ -1,0 +1,35 @@
+CREATE TABLE weather (
+    cityname TEXT NOT NULL PRIMARY KEY,
+    json TEXT NOT NULL
+);
+
+
+-- Insertion d'un nouveau photographer
+insertOrReplacePhotographer:
+INSERT OR REPLACE INTO weather(cityname, json)
+VALUES (?, ?);
+
+
+-- Sélection d'un photographer par son id
+selectWeatherById:
+SELECT * FROM weather WHERE cityname = ?;
+
+-- Sélection de tous les photographers
+selectAllWeather:
+SELECT * FROM weather;
+
+-- -- Mise à jour d'un photographer
+-- updatePhotographer:
+-- UPDATE Photographer
+-- SET stageName = ?,
+--     photoUrl = ?,
+--     story = ?,
+--     portfolio = ?
+-- WHERE id = ?;
+--
+-- -- Suppression d'un photographer
+-- deletePhotographer:
+-- DELETE FROM Photographer WHERE id = ?;
+--
+-- deleteAll:
+-- DELETE FROM Photographer;
